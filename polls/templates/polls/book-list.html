@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fantastic Beasts</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+<body>
+    <table>
+        <tbody>
+            <tr>
+                <td>Title</td>
+                <td>Photo</td>
+                <td></td>
+                <td></td>
+            </tr>
+            {% for entry in list %}
+            <tr class="title entry-{{ entry.id }}">
+                <td>
+                    <span>{{ entry.title }}</span>
+                    <input name="edit-input" value="{{ entry.title }} "/>
+                </td>
+                <td>{{ entry.photo }}</td>
+                <td onclick="deleteBook({{ entry.id }})">delete</td>
+                <td>
+                    <span class="edit-btn" onclick="showInput({{ entry.id }})">edit</span>
+                    <span class="save-btn" onclick="editBook({{ entry.id }})">save</span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <script>
+        $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+
+        function showInput(id) {
+            $(`.entry-${id}`).toggleClass('edit')
+        }
+
+        function editBook(id) {
+            $.ajax({
+                url: "/polls/book/update/",
+                method: "POST",
+                data: { id : id, title: $(`.entry-${id} input`).val() }
+            }).done(function(data) {
+                console.log(data)
+                showInput(id)
+            });
+        };
+
+        function deleteBook(id) {
+            $.ajax({
+                url: "/polls/book/delete/",
+                method: "POST",
+                data: { id : id }
+            }).done(function(data) {
+                console.log(data)
+            });
+        };
+    </script>
+</body>
+<style>
+    td { 
+        border-bottom: 1px solid;
+    }
+
+     input { display: none; }
+    .edit input { display: block; }
+    .edit span { display: none; }
+     .save-btn { display: none; }
+    .edit .save-btn { display: block; }
+    .edit .edit-btn { display: none; }
+</style>
+
+</html>
