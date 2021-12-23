@@ -34,7 +34,7 @@ class TestConvertToMonthsMethod(unittest.TestCase):
 
   def test_month_with_negative_number(self):
     self.assertTrue(convert_months(-4) < 0)
-    self.assertEqual(convert_months(-0.4), 0)
+    self.assertEqual(convert_months(-0.4), 12)
 
 
   def test_month_with_boolean(self):
@@ -76,9 +76,10 @@ class TestConvertToMonthsMethod(unittest.TestCase):
     self.assertIn("int() argument must be a string, a bytes-like object or a number, not 'NoneType'", cm.exception.args)
 
 
-# class TestConvertToDaysMethod(unittest.TestCase):
-#   def test_day_with_int(self):
-#     self.assertEqual(convert_days(4), 60)
+class TestConvertToDaysMethod(unittest.TestCase):
+  pass
+  # def test_day_with_int(self):
+  #   self.assertEqual(convert_days(4), 60)
 
 #   def test_day_with_float(self):
 #     self.assertEqual(convert_days(4.5), 60)
