@@ -1,13 +1,6 @@
 import time
 from calendar import isleap
 
-# judge the leap year
-def judge_leap_year(year):
-    if isleap(year):
-        return True
-    else:
-        return False
-
 
 # returns the number of days in each month
 def month_days(month, leap_year):
@@ -22,7 +15,7 @@ def month_days(month, leap_year):
 
 # this function to convert a valid number to number of month
 def convert_age_to_months(age):
-  if type(age) == bool: 
+  if isinstance(age, bool): 
     return 'Not a valid age'
 
   localtime = time.localtime(time.time())
@@ -37,7 +30,7 @@ def convert_age_to_months(age):
 # this function to convert a valid number to number of day
 def convert_age_to_days(age):
   # check bool
-  if type(age) == bool: 
+  if isinstance(age, bool): 
     return 'Not a valid age'
 
   day = 0
@@ -52,12 +45,12 @@ def convert_age_to_days(age):
 
   # calculate the days in begin_year > end_year
   for y in range(begin_year, end_year):
-      if (judge_leap_year(y)):
+      if (isleap(y)):
           day = day + 366
       else:
           day = day + 365
 
-  leap_year = judge_leap_year(localtime.tm_year)
+  leap_year = isleap(localtime.tm_year)
   
   # calculate the days in end_year from 1 > current month
   for m in range(1, localtime.tm_mon):
