@@ -5,12 +5,17 @@ from calendar import monthrange, isleap
 
 # this function to convert a valid number to number of month
 def convert_age_to_months(age):
-    if isinstance(age, bool): 
-      return 'Not a valid age'
-
     localtime = time.localtime(time.time())
 
-    year = int(age)
+    try:
+        if isinstance(age, bool): 
+            raise
+
+        year = int(age)
+        
+    except Exception:
+        raise ValueError('Not a valid age')
+    
 
     month = year * 12 + localtime.tm_mon
 
@@ -19,13 +24,16 @@ def convert_age_to_months(age):
 
 # this function to convert a valid number to number of day
 def convert_age_to_days(age):
-    # check bool
-    if isinstance(age, bool): 
-      return 'Not a valid age'
-
     day = 0
     
-    year = int(age)
+    try:
+        if isinstance(age, bool): 
+            raise
+
+        year = int(age)
+        
+    except Exception:
+        raise ValueError('Not a valid age')
 
     localtime = time.localtime(time.time())
 
@@ -48,3 +56,21 @@ def convert_age_to_days(age):
     day = day + localtime.tm_mday
 
     return day
+
+def main():
+    while True:
+        age = input('Please enter your age: ')
+        try:
+            days = convert_age_to_days(age)
+            months = convert_age_to_months(age)
+
+        except ValueError:
+            print ('Valid number, please')
+            continue
+
+        print ("Your age: %s, It's similar to %s months or %s days" % (age, months, days))
+        break
+    
+    
+if __name__ == "__main__":
+    main()

@@ -28,28 +28,30 @@ class TestConvertToMonthsMethod(unittest.TestCase):
 
   # unit test with payload = a huge number (> 256 - int)
   def test_month_with_huge_number(self):
-    self.assertEqual(convert_age_to_months(999999999), 12000000000)
+    self.assertEqual(convert_age_to_months(999999999), 11999999989)
 
   # unit test with payload = a string number
   def test_month_with_string_number(self):
-    self.assertEqual(convert_age_to_months('4'), 60)
+    self.assertEqual(convert_age_to_months('4'), 49)
 
   # unit test with payload = a negative number (< 0)
   def test_month_with_negative_number(self):
     self.assertTrue(convert_age_to_months(-4) < 0)
-    self.assertEqual(convert_age_to_months(-0.4), 12)
+    self.assertEqual(convert_age_to_months(-0.4), 1)
 
   # unit test with payload = a bool type
   def test_month_with_boolean(self):
-      self.assertEqual(convert_age_to_months(True), 'Not a valid age')
-      self.assertEqual(convert_age_to_months(False), 'Not a valid age')
+    with self.assertRaises(ValueError) as cm:
+      convert_age_to_months(False)
+
+    self.assertIn("Not a valid age", cm.exception.args)
 
   # unit test with payload = a characters
   def test_month_with_characters(self):
     with self.assertRaises(ValueError) as cm:
       convert_age_to_months('abc')
 
-    self.assertIn("invalid literal for int() with base 10: 'abc'", cm.exception.args)
+    self.assertIn("Not a valid age", cm.exception.args)
 
   # unit test with no payload
   def test_month_with_no_input(self):
@@ -60,24 +62,24 @@ class TestConvertToMonthsMethod(unittest.TestCase):
 
   # unit test with payload = dict() value
   def test_month_with_dict(self):
-    with self.assertRaises(TypeError) as cm:
+    with self.assertRaises(ValueError) as cm:
       convert_age_to_months(dict())
 
-    self.assertIn("int() argument must be a string, a bytes-like object or a number, not 'dict'", cm.exception.args)
+    self.assertIn("Not a valid age", cm.exception.args)
 
   # unit test with payload = list() value
   def test_month_with_list(self):
-    with self.assertRaises(TypeError) as cm:
+    with self.assertRaises(ValueError) as cm:
       convert_age_to_months(list())
 
-    self.assertIn("int() argument must be a string, a bytes-like object or a number, not 'list'", cm.exception.args)
+    self.assertIn("Not a valid age", cm.exception.args)
 
   # unit test with payload = None value
   def test_month_with_none(self):
-    with self.assertRaises(TypeError) as cm:
+    with self.assertRaises(ValueError) as cm:
       convert_age_to_months(None)
 
-    self.assertIn("int() argument must be a string, a bytes-like object or a number, not 'NoneType'", cm.exception.args)
+    self.assertIn("Not a valid age", cm.exception.args)
 
 
 #  similar to TestConvertToMonthsMethod
